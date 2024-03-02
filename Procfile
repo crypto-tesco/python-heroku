@@ -1,1 +1,1 @@
-web: source .env/bin/activate python heroku-logging.py
+web: python heroku-logging.py
