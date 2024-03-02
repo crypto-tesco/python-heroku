@@ -4,10 +4,10 @@ from datetime import datetime
 import time
 
 
-class CustomJsonFormatter(jsonlogger.JsonFormatter):
+class JsonFormatter(jsonlogger.JsonFormatter):
     def add_fields(self, log_record, record, message_dict):
-        super(CustomJsonFormatter, self).add_fields(log_record, record,
-                                                    message_dict)
+        super(JsonFormatter, self).add_fields(log_record, record,
+                                              message_dict)
         if not log_record.get("timestamp"):
             now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
             log_record["timestamp"] = now
@@ -22,18 +22,42 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 logHandler = logging.StreamHandler()
-formatter = CustomJsonFormatter("%(timestamp)s %(level)s %(name)s %(message)s")
+formatter = JsonFormatter("%(timestamp)s %(level)s %(name)s %(message)s")
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 
+number = 0
+
+
+def is_prime(num):
+    if num <= 1:
+        return False
+    if num <= 3:
+        return True
+    if num % 2 == 0 or num % 3 == 0:
+        return False
+    i = 5
+    while i * i <= num:
+        if num % i == 0 or num % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+
 while True:
-    logger.debug("Request made.", extra={"key": "value", "num": 12})
+    level = number % 4
+    if level == 0:
+        logger.info("New number", extra={"Number": number})
+    elif level == 1:
+        logger.debug("New number", extra={"Number": number})
+    elif level == 2:
+        logger.error("New number", extra={"Number": number})
+
     time.sleep(1)
-    logger.info("A user has logged in.", extra={"username": "testuser"})
-    time.sleep(1)
-    logger.warning("Low disk space.", extra={"size": 25})
-    time.sleep(1)
-    logger.error("Error connecting to database.", extra={"dbname": "maindb"})
-    time.sleep(1)
-    logger.critical("Application crashed.", extra={"code": 12345})
-    time.sleep(1)
+    if number == 7:
+        logger.debug("Lucky number 7", extra={"Number": number})
+        time.sleep(1)
+    elif is_prime(number):
+        logger.critical("Prime found!", extra={"Prime Number": number})
+        time.sleep(1)
+    number += 1
