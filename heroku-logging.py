@@ -26,6 +26,7 @@ formatter = JsonFormatter("%(timestamp)s %(level)s %(name)s %(message)s")
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 
+
 number = 0
 
 
