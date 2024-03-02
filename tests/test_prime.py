@@ -36,3 +36,9 @@ def test_prime4():
 def test_prime5():
     number = 5
     assert is_prime(number)
+
+
+def test_prime6():
+    number = 6
+    # Should fail
+    assert is_prime(number)
