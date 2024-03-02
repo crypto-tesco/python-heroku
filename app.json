@@ -3,11 +3,10 @@
       "test": "pip install -r requirements.txt && pytest"
     },
     "environments": {
-      "test": {
-        "pip": [],
-        "addons": [
-          { "plan": "basic", "app": "heroku-pip" }
-        ]
+        "test": {
+          "scripts": {
+            "test": "pytest"
+          }
+        }
       }
-    }
   }
